@@ -7,21 +7,49 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, Plus, X, Flame, Wheat, Beef, Droplets, Leaf } from 'lucide-react';
+import { Search, Plus, X, Flame, Wheat, Beef, Droplets, Leaf, Camera } from 'lucide-react';
 import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import BarcodeScanner from '@/components/BarcodeScanner';
 
 export default function Scanner() {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<FoodItem | null>(null);
   const [quantity, setQuantity] = useState('');
   const [mealType, setMealType] = useState<MealEntry['mealType']>('lunch');
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannedFood, setScannedFood] = useState<any>(null);
   const { addMeal, today, profile } = useNutrition();
   const { toast } = useToast();
 
   const results = searchFoods(query);
 
   const handleAdd = () => {
+    if (!selected && !scannedFood) return;
+
+    if (scannedFood) {
+      const qty = Number(quantity) || 100;
+      const ratio = qty / 100;
+      addMeal({
+        foodId: `scan-${scannedFood.barcode}`,
+        foodName: scannedFood.name,
+        mealType,
+        quantity: qty,
+        calories: scannedFood.calories * ratio,
+        carbs: scannedFood.carbs * ratio,
+        protein: scannedFood.protein * ratio,
+        fat: scannedFood.fat * ratio,
+        fiber: scannedFood.fiber * ratio,
+        glycemicIndex: 0,
+        date: today,
+        time: format(new Date(), 'HH:mm'),
+      });
+      toast({ title: '✅ Aliment ajouté', description: `${scannedFood.name} (${qty}g) ajouté au ${MEAL_TYPE_LABELS[mealType].toLowerCase()}` });
+      setScannedFood(null);
+      setQuantity('');
+      return;
+    }
+
     if (!selected) return;
     const qty = Number(quantity) || selected.servingSize;
     const ratio = qty / 100;
@@ -46,9 +74,26 @@ export default function Scanner() {
     setQuantity('');
   };
 
+  const handleFoodScanned = (food: any) => {
+    setScannedFood(food);
+    setQuantity('100');
+  };
+
   return (
     <div className="flex flex-col gap-4 pb-4">
-      <h1 className="text-2xl font-bold">Scanner d'aliments</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Scanner d'aliments</h1>
+        <Button onClick={() => setScannerOpen(true)} size="sm" className="gap-2">
+          <Camera className="h-4 w-4" />
+          Scanner
+        </Button>
+      </div>
+
+      <BarcodeScanner
+        open={scannerOpen}
+        onOpenChange={setScannerOpen}
+        onFoodScanned={handleFoodScanned}
+      />
 
       {/* Search */}
       <div className="relative">
@@ -168,6 +213,73 @@ export default function Scanner() {
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(MEAL_TYPE_LABELS).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <Button onClick={handleAdd} className="w-full gap-2">
+                <Plus className="h-4 w-4" />
+                Ajouter au journal
+              </Button>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Scanned food dialog */}
+      <Dialog open={!!scannedFood} onOpenChange={(open) => !open && setScannedFood(null)}>
+        <DialogContent className="max-w-sm mx-auto">
+          {scannedFood && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  {scannedFood.image && (
+                    <img src={scannedFood.image} alt={scannedFood.name} className="h-12 w-12 rounded-lg object-cover" />
+                  )}
+                  <div>
+                    <p>{scannedFood.name}</p>
+                    {scannedFood.brand && <p className="text-xs font-normal text-muted-foreground">{scannedFood.brand}</p>}
+                  </div>
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className="grid grid-cols-2 gap-3 text-center">
+                <div className="rounded-xl bg-muted p-3">
+                  <Flame className="mx-auto h-5 w-5 text-orange-500 mb-1" />
+                  <p className="text-lg font-bold">{scannedFood.calories}</p>
+                  <p className="text-[10px] text-muted-foreground">kcal/100g</p>
+                </div>
+                <div className="rounded-xl bg-muted p-3">
+                  <Wheat className="mx-auto h-5 w-5 text-amber-500 mb-1" />
+                  <p className="text-lg font-bold">{scannedFood.carbs}g</p>
+                  <p className="text-[10px] text-muted-foreground">Glucides</p>
+                </div>
+                <div className="rounded-xl bg-muted p-3">
+                  <Beef className="mx-auto h-5 w-5 text-red-500 mb-1" />
+                  <p className="text-lg font-bold">{scannedFood.protein}g</p>
+                  <p className="text-[10px] text-muted-foreground">Protéines</p>
+                </div>
+                <div className="rounded-xl bg-muted p-3">
+                  <Droplets className="mx-auto h-5 w-5 text-blue-500 mb-1" />
+                  <p className="text-lg font-bold">{scannedFood.fat}g</p>
+                  <p className="text-[10px] text-muted-foreground">Lipides</p>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <label className="text-xs text-muted-foreground mb-1 block">Quantité (g)</label>
+                  <Input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} min="1" />
+                </div>
+                <div className="flex-1">
+                  <label className="text-xs text-muted-foreground mb-1 block">Repas</label>
+                  <Select value={mealType} onValueChange={(v) => setMealType(v as MealEntry['mealType'])}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {Object.entries(MEAL_TYPE_LABELS).map(([key, label]) => (
                         <SelectItem key={key} value={key}>{label}</SelectItem>
