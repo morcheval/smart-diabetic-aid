@@ -11,6 +11,8 @@ import { Search, Plus, X, Flame, Wheat, Beef, Droplets, Leaf, Camera } from 'luc
 import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 import BarcodeScanner from '@/components/BarcodeScanner';
+import PhotoScanner from '@/components/PhotoScanner';
+import ScanHistory from '@/components/ScanHistory';
 
 export default function Scanner() {
   const [query, setQuery] = useState('');
@@ -83,10 +85,13 @@ export default function Scanner() {
     <div className="flex flex-col gap-4 pb-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Scanner d'aliments</h1>
-        <Button onClick={() => setScannerOpen(true)} size="sm" className="gap-2">
-          <Camera className="h-4 w-4" />
-          Scanner
-        </Button>
+        <div className="flex gap-2">
+          <PhotoScanner />
+          <Button onClick={() => setScannerOpen(true)} size="sm" className="gap-2">
+            <Camera className="h-4 w-4" />
+            Code-barres
+          </Button>
+        </div>
       </div>
 
       <BarcodeScanner
@@ -297,6 +302,9 @@ export default function Scanner() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Scan History */}
+      <ScanHistory />
     </div>
   );
 }
