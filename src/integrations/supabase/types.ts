@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      food_scans: {
+        Row: {
+          ai_description: string | null
+          calories: number
+          carbs: number
+          created_at: string
+          fat: number
+          fiber: number
+          food_name: string
+          glycemic_index: number | null
+          id: string
+          photo_url: string | null
+          protein: number
+          scan_type: string
+        }
+        Insert: {
+          ai_description?: string | null
+          calories?: number
+          carbs?: number
+          created_at?: string
+          fat?: number
+          fiber?: number
+          food_name: string
+          glycemic_index?: number | null
+          id?: string
+          photo_url?: string | null
+          protein?: number
+          scan_type?: string
+        }
+        Update: {
+          ai_description?: string | null
+          calories?: number
+          carbs?: number
+          created_at?: string
+          fat?: number
+          fiber?: number
+          food_name?: string
+          glycemic_index?: number | null
+          id?: string
+          photo_url?: string | null
+          protein?: number
+          scan_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
