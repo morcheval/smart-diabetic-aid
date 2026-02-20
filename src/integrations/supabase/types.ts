@@ -59,6 +59,45 @@ export type Database = {
         }
         Relationships: []
       }
+      insulin_logs: {
+        Row: {
+          blood_glucose: number | null
+          created_at: string
+          date: string
+          dose_units: number
+          id: string
+          insulin_name: string | null
+          insulin_type: string
+          meal_context: string
+          notes: string | null
+          time: string
+        }
+        Insert: {
+          blood_glucose?: number | null
+          created_at?: string
+          date: string
+          dose_units: number
+          id?: string
+          insulin_name?: string | null
+          insulin_type: string
+          meal_context?: string
+          notes?: string | null
+          time: string
+        }
+        Update: {
+          blood_glucose?: number | null
+          created_at?: string
+          date?: string
+          dose_units?: number
+          id?: string
+          insulin_name?: string | null
+          insulin_type?: string
+          meal_context?: string
+          notes?: string | null
+          time?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
