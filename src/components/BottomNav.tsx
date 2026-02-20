@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Search, BookOpen, BarChart3, User } from 'lucide-react';
+import { Home, Search, BookOpen, Syringe, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Accueil' },
   { to: '/scanner', icon: Search, label: 'Scanner' },
   { to: '/journal', icon: BookOpen, label: 'Journal' },
-  { to: '/stats', icon: BarChart3, label: 'Stats' },
+  { to: '/insulin', icon: Syringe, label: 'Insuline' },
   { to: '/profile', icon: User, label: 'Profil' },
 ];
 
