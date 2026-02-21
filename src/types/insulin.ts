@@ -51,6 +51,14 @@ export const INSULIN_TYPE_DOT_COLORS: Record<InsulinType, string> = {
   mixte: 'bg-orange-500',
 };
 
+export interface InsulinPreset {
+  id: string;
+  name: string;
+  insulin_type: InsulinType;
+  default_dose: number;
+  meal_context: MealContext;
+}
+
 export function getGlycemiaZone(value: number): {
   label: string;
   color: string;

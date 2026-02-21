@@ -7,6 +7,7 @@ export interface UserProfile {
   carbGoal: number;
   proteinGoal: number;
   fatGoal: number;
+  insulinPresets?: import('@/types/insulin').InsulinPreset[];
 }
 
 export interface FoodItem {

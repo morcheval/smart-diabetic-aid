@@ -10,6 +10,7 @@ const DEFAULT_PROFILE: UserProfile = {
   carbGoal: 250,
   proteinGoal: 75,
   fatGoal: 65,
+  insulinPresets: [],
 };
 
 export function useNutrition() {

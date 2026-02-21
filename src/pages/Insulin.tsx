@@ -23,6 +23,7 @@ import {
 import {
   InsulinType,
   MealContext,
+  InsulinPreset,
   INSULIN_TYPE_LABELS,
   MEAL_CONTEXT_LABELS,
   INSULIN_TYPE_COLORS,
@@ -30,10 +31,14 @@ import {
   getGlycemiaZone,
 } from '@/types/insulin';
 import { useInsulinLogs, useWeeklyInsulinStats, useAddInsulinLog, useRemoveInsulinLog } from '@/hooks/useInsulin';
+import { useNutrition } from '@/hooks/useNutrition';
 
 // ─── Form Tab ────────────────────────────────────────────────────────────────
 
 function RegisterTab() {
+  const { profile } = useNutrition();
+  const presets = profile.insulinPresets ?? [];
+
   const [insulinType, setInsulinType] = useState<InsulinType>('rapide');
   const [insulinName, setInsulinName] = useState('');
   const [dose, setDose] = useState('');
@@ -41,6 +46,13 @@ function RegisterTab() {
   const [bloodGlucose, setBloodGlucose] = useState('');
   const [notes, setNotes] = useState('');
   const addLog = useAddInsulinLog();
+
+  const applyPreset = (preset: InsulinPreset) => {
+    setInsulinType(preset.insulin_type);
+    setInsulinName(preset.name);
+    setDose(String(preset.default_dose));
+    setMealContext(preset.meal_context);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +78,25 @@ function RegisterTab() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Preset shortcuts */}
+      {presets.length > 0 && (
+        <div className="space-y-2">
+          <Label className="text-xs font-medium text-muted-foreground">Raccourcis</Label>
+          <div className="flex flex-wrap gap-2">
+            {presets.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => applyPreset(p)}
+                className={`rounded-xl border px-3 py-2 text-sm font-semibold transition-all hover:scale-105 hover:shadow-sm ${INSULIN_TYPE_COLORS[p.insulin_type]}`}
+              >
+                {p.name} {p.default_dose}U
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Type d'insuline */}
       <div className="space-y-2">
         <Label className="text-sm font-semibold text-foreground">Type d'insuline</Label>
