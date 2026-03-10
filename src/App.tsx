@@ -29,6 +29,9 @@ import Stats from "./pages/Stats";
 import Profile from "./pages/Profile";
 import Conseils from "./pages/Conseils";
 import Insulin from "./pages/Insulin";
+import DiabetesInfo from "./pages/DiabetesInfo";
+import InsulinInfo from "./pages/InsulinInfo";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 // Client React Query pour gérer les requêtes asynchrones (fetch, cache, mutations)
@@ -56,6 +59,9 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/conseils" element={<Conseils />} />
               <Route path="/insulin" element={<Insulin />} />
+              <Route path="/diabetes-info" element={<DiabetesInfo />} />
+              <Route path="/insulin-info" element={<InsulinInfo />} />
+              <Route path="/legal" element={<Legal />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

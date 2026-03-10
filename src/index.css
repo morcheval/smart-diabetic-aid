@@ -15,17 +15,17 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 15%;
 
-    --primary: 142 71% 45%;
+    --primary: 199 89% 48%; /* Un bleu doux mais vif */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 142 40% 94%;
+    --secondary: 142 40% 94%; /* Un vert pastel */
     --secondary-foreground: 142 71% 25%;
 
     --muted: 210 30% 95%;
     --muted-foreground: 215 15% 47%;
 
-    --accent: 37 91% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 48 96% 89%; /* Un jaune pastel */
+    --accent-foreground: 48 96% 25%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;

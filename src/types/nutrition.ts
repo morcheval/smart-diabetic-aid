@@ -14,11 +14,18 @@ export type DiabetesType = 'type1' | 'type2' | 'gestational';
 /** Profil de l'utilisateur avec ses objectifs nutritionnels quotidiens */
 export interface UserProfile {
   name: string;                    // Nom de l'utilisateur
+  age?: number;                    // Âge
+  gender?: 'homme' | 'femme' | 'autre'; // Sexe
+  weight?: number;                 // Poids (kg)
+  height?: number;                 // Taille (cm)
   diabetesType: DiabetesType;      // Type de diabète
   calorieGoal: number;             // Objectif calories (kcal/jour)
   carbGoal: number;                // Objectif glucides (g/jour)
   proteinGoal: number;             // Objectif protéines (g/jour)
   fatGoal: number;                 // Objectif lipides (g/jour)
+  sugarGoal: number;               // Objectif sucre (g/jour)
+  saltGoal: number;                // Objectif sel (g/jour)
+  carbInsulinRatio?: number;       // Ratio glucides/insuline
   insulinPresets?: import('@/types/insulin').InsulinPreset[]; // Insulines favorites pré-configurées
 }
 
@@ -32,6 +39,8 @@ export interface FoodItem {
   protein: number;        // Protéines en g pour 100g
   fat: number;            // Lipides en g pour 100g
   fiber: number;          // Fibres en g pour 100g
+  sugar: number;          // Sucre en g pour 100g
+  salt: number;           // Sel en g pour 100g
   glycemicIndex: number;  // Index glycémique (0-100) — important pour les diabétiques
   servingSize: number;    // Taille de portion suggérée en grammes
   icon: string;           // Emoji représentant l'aliment
@@ -49,6 +58,8 @@ export interface MealEntry {
   protein: number;         // Protéines calculées
   fat: number;             // Lipides calculés
   fiber: number;           // Fibres calculées
+  sugar: number;           // Sucre calculé
+  salt: number;            // Sel calculé
   glycemicIndex: number;   // IG de l'aliment
   date: string;            // Date au format YYYY-MM-DD
   time: string;            // Heure au format HH:mm
@@ -61,6 +72,8 @@ export interface DailyNutrition {
   protein: number;
   fat: number;
   fiber: number;
+  sugar: number;
+  salt: number;
 }
 
 /** Labels français pour les types de repas */
