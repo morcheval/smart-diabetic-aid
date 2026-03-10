@@ -23,6 +23,8 @@ const DEFAULT_PROFILE: UserProfile = {
   carbGoal: 250,
   proteinGoal: 75,
   fatGoal: 65,
+  sugarGoal: 50,
+  saltGoal: 6,
   insulinPresets: [],
 };
 
@@ -58,8 +60,10 @@ export function useNutrition() {
         protein: acc.protein + m.protein,
         fat: acc.fat + m.fat,
         fiber: acc.fiber + m.fiber,
+        sugar: acc.sugar + (m.sugar || 0),
+        salt: acc.salt + (m.salt || 0),
       }),
-      { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0 }
+      { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sugar: 0, salt: 0 }
     );
   };
 

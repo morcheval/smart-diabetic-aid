@@ -101,7 +101,7 @@ export default function Stats() {
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="calories" fill="hsl(142, 71%, 45%)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="calories" fill="hsl(199, 89%, 48%)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -147,6 +147,8 @@ export default function Stats() {
               { label: 'Glucides', current: todayNutrition.carbs, goal: profile.carbGoal, unit: 'g' },
               { label: 'Protéines', current: todayNutrition.protein, goal: profile.proteinGoal, unit: 'g' },
               { label: 'Lipides', current: todayNutrition.fat, goal: profile.fatGoal, unit: 'g' },
+              { label: 'Sucre', current: todayNutrition.sugar, goal: profile.sugarGoal, unit: 'g' },
+              { label: 'Sel', current: todayNutrition.salt, goal: profile.saltGoal, unit: 'g' },
             ].map((item) => {
               const pct = Math.min(100, (item.current / item.goal) * 100);
               return (

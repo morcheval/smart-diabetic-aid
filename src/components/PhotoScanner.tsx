@@ -34,6 +34,8 @@ interface FoodAnalysis {
   protein: number;        // Protéines (g)
   fat: number;            // Lipides (g)
   fiber: number;          // Fibres (g)
+  sugar: number;          // Sucre (g)
+  salt: number;           // Sel (g)
   glycemic_index: number; // Index glycémique estimé
   items: string[];        // Liste des aliments identifiés dans le plat
   advice: string;         // Conseil nutritionnel pour diabétique
@@ -108,6 +110,9 @@ export default function PhotoScanner() {
     const qty = Number(quantity) || 100;
     const ratio = qty / 100; // Ratio pour ajuster les valeurs selon la quantité
 
+    // Permet l'édition manuelle des valeurs avant ajout si nécessaire
+    // (L'interface affiche les valeurs de 'analysis' mais on pourrait les mapper à des états éditables)
+
     // Upload de la photo dans le stockage (bucket food-photos)
     let photoUrl: string | undefined;
     if (photoFile) {
@@ -125,18 +130,22 @@ export default function PhotoScanner() {
     }
 
     // Sauvegarde le scan dans la table food_scans (base de données)
-    await supabase.from('food_scans').insert({
-      food_name: analysis.name,
-      calories: analysis.calories,
-      carbs: analysis.carbs,
-      protein: analysis.protein,
-      fat: analysis.fat,
-      fiber: analysis.fiber,
-      glycemic_index: analysis.glycemic_index,
-      photo_url: photoUrl,
-      ai_description: analysis.description,
-      scan_type: 'photo',
-    });
+    try {
+      await supabase.from('food_scans').insert({
+        food_name: analysis.name,
+        calories: analysis.calories,
+        carbs: analysis.carbs,
+        protein: analysis.protein,
+        fat: analysis.fat,
+        fiber: analysis.fiber,
+        glycemic_index: analysis.glycemic_index,
+        photo_url: photoUrl,
+        ai_description: analysis.description,
+        scan_type: 'photo',
+      });
+    } catch (e) {
+      console.error("Erreur sauvegarde scan:", e);
+    }
 
     // Ajoute au journal local (localStorage) avec les valeurs ajustées à la quantité
     addMeal({
@@ -149,6 +158,8 @@ export default function PhotoScanner() {
       protein: analysis.protein * ratio,
       fat: analysis.fat * ratio,
       fiber: analysis.fiber * ratio,
+      sugar: (analysis.sugar || 0) * ratio,
+      salt: (analysis.salt || 0) * ratio,
       glycemicIndex: analysis.glycemic_index,
       date: today,
       time: format(new Date(), 'HH:mm'),
@@ -269,12 +280,17 @@ export default function PhotoScanner() {
                   </div>
                 </div>
 
-                {/* Fibres, IG et conseil nutritionnel */}
+                {/* Fibres, Sucre, Sel, IG et conseil nutritionnel */}
                 <div className="flex items-center gap-2 rounded-xl bg-muted p-3">
                   <Leaf className="h-5 w-5 text-primary shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Fibres: {analysis.fiber}g · IG: {analysis.glycemic_index}</p>
-                    {analysis.advice && <p className="text-xs text-primary mt-1">{analysis.advice}</p>}
+                  <div className="w-full">
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Fibres: {analysis.fiber}g</span>
+                      <span>Sucre: {analysis.sugar || 0}g</span>
+                      <span>Sel: {analysis.salt || 0}g</span>
+                    </div>
+                    <p className="text-xs font-semibold mt-1">IG: {analysis.glycemic_index}</p>
+                    {analysis.advice && <p className="text-xs text-primary mt-1 italic">"{analysis.advice}"</p>}
                   </div>
                 </div>
 
