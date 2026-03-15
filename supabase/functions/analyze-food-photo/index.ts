@@ -62,6 +62,8 @@ serve(async (req) => {
   "protein": nombre (g de protéines),
   "fat": nombre (g de lipides),
   "fiber": nombre (g de fibres),
+  "sugar": nombre (g de sucre),
+  "salt": nombre (g de sel),
   "glycemic_index": nombre (index glycémique estimé 0-100),
   "items": ["liste", "des", "aliments", "identifiés"],
   "advice": "Conseil nutritionnel pour un diabétique"
