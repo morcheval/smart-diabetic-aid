@@ -45,18 +45,17 @@ export default function Dashboard() {
 
       {/* Calories card */}
       <Card className="border-0 bg-gradient-to-br from-primary/10 to-primary/5">
-        <CardContent className="pt-5">
-          <div className="flex items-center justify-between mb-3">
+        <CardContent className="pt-4 pb-4">
+          <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-sm text-muted-foreground">Calories aujourd'hui</p>
-              <p className="text-3xl font-bold">{Math.round(todayNutrition.calories)}</p>
-              <p className="text-xs text-muted-foreground">/ {profile.calorieGoal} kcal</p>
+              <p className="text-xs text-muted-foreground">Calories aujourd'hui</p>
+              <p className="text-2xl font-bold">{Math.round(todayNutrition.calories)} <span className="text-xs font-normal text-muted-foreground">/ {profile.calorieGoal} kcal</span></p>
             </div>
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary/20">
-              <Flame className="h-7 w-7 text-primary" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary/20">
+              <Flame className="h-5 w-5 text-primary" />
             </div>
           </div>
-          <Progress value={caloriePercent} className="h-2" />
+          <Progress value={caloriePercent} className="h-1.5" />
         </CardContent>
       </Card>
 

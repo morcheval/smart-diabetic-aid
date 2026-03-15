@@ -50,7 +50,7 @@ const App = () => (
         {/* Conteneur principal : centré, largeur max mobile, fond thémé */}
         <div className="mx-auto min-h-screen max-w-md bg-background">
           {/* Zone de contenu avec padding et espace pour la barre de nav en bas */}
-          <main className="px-4 pt-4 pb-24">
+          <main className="px-3 pt-3 pb-20">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/scanner" element={<Scanner />} />
