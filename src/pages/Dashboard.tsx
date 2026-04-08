@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import { useNutrition } from '@/hooks/useNutrition';
 import { DIABETES_TYPE_LABELS, MEAL_TYPE_LABELS, MEAL_TYPE_ICONS, getGlycemicImpactLabel } from '@/types/nutrition';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Leaf, Flame, Droplets, Beef, Wheat } from 'lucide-react';
+import { Leaf, Flame, Droplets, Beef, Wheat, BookOpen, Syringe, ShieldCheck } from 'lucide-react';
 
 const TIPS = [
   "Privilégiez les aliments à index glycémique bas pour stabiliser votre glycémie.",
@@ -22,6 +23,8 @@ export default function Dashboard() {
   const carbPercent = Math.min(100, (todayNutrition.carbs / profile.carbGoal) * 100);
   const proteinPercent = Math.min(100, (todayNutrition.protein / profile.proteinGoal) * 100);
   const fatPercent = Math.min(100, (todayNutrition.fat / profile.fatGoal) * 100);
+  const sugarPercent = Math.min(100, (todayNutrition.sugar / profile.sugarGoal) * 100);
+  const saltPercent = Math.min(100, (todayNutrition.salt / profile.saltGoal) * 100);
 
   return (
     <div className="flex flex-col gap-4 pb-4">
@@ -42,18 +45,17 @@ export default function Dashboard() {
 
       {/* Calories card */}
       <Card className="border-0 bg-gradient-to-br from-primary/10 to-primary/5">
-        <CardContent className="pt-5">
-          <div className="flex items-center justify-between mb-3">
+        <CardContent className="pt-4 pb-4">
+          <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-sm text-muted-foreground">Calories aujourd'hui</p>
-              <p className="text-3xl font-bold">{Math.round(todayNutrition.calories)}</p>
-              <p className="text-xs text-muted-foreground">/ {profile.calorieGoal} kcal</p>
+              <p className="text-xs text-muted-foreground">Calories aujourd'hui</p>
+              <p className="text-2xl font-bold">{Math.round(todayNutrition.calories)} <span className="text-xs font-normal text-muted-foreground">/ {profile.calorieGoal} kcal</span></p>
             </div>
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary/20">
-              <Flame className="h-7 w-7 text-primary" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary/20">
+              <Flame className="h-5 w-5 text-primary" />
             </div>
           </div>
-          <Progress value={caloriePercent} className="h-2" />
+          <Progress value={caloriePercent} className="h-1.5" />
         </CardContent>
       </Card>
 
@@ -85,6 +87,32 @@ export default function Dashboard() {
         </Card>
       </div>
 
+      {/* Sugar & Salt */}
+      <div className="grid grid-cols-2 gap-3">
+        <Card className="border-0 shadow-sm bg-accent/20">
+          <CardContent className="p-3 flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-muted-foreground font-medium uppercase">Sucre</span>
+              <span className="text-sm font-bold">{todayNutrition.sugar.toFixed(1)}g / {profile.sugarGoal}g</span>
+            </div>
+            <div className="w-16">
+              <Progress value={sugarPercent} className="h-1.5" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-0 shadow-sm bg-accent/20">
+          <CardContent className="p-3 flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-muted-foreground font-medium uppercase">Sel</span>
+              <span className="text-sm font-bold">{todayNutrition.salt.toFixed(1)}g / {profile.saltGoal}g</span>
+            </div>
+            <div className="w-16">
+              <Progress value={saltPercent} className="h-1.5" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Tip of the day */}
       <Card className="border-primary/20 bg-primary/5">
         <CardContent className="flex gap-3 pt-4">
@@ -95,6 +123,34 @@ export default function Dashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Quick Access Info */}
+      <div className="grid grid-cols-3 gap-2">
+        <Link to="/diabetes-info">
+          <Card className="border-0 bg-blue-50/50 hover:bg-blue-50 transition-colors">
+            <CardContent className="p-2 flex flex-col items-center gap-1">
+              <BookOpen className="h-4 w-4 text-blue-500" />
+              <span className="text-[10px] font-medium text-center">Diabète</span>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link to="/insulin-info">
+          <Card className="border-0 bg-purple-50/50 hover:bg-purple-50 transition-colors">
+            <CardContent className="p-2 flex flex-col items-center gap-1">
+              <Syringe className="h-4 w-4 text-purple-500" />
+              <span className="text-[10px] font-medium text-center">Insuline</span>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link to="/legal">
+          <Card className="border-0 bg-amber-50/50 hover:bg-amber-50 transition-colors">
+            <CardContent className="p-2 flex flex-col items-center gap-1">
+              <ShieldCheck className="h-4 w-4 text-amber-500" />
+              <span className="text-[10px] font-medium text-center">Légal</span>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
 
       {/* Recent meals */}
       <div>

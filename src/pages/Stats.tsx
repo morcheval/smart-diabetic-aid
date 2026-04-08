@@ -39,20 +39,20 @@ export default function Stats() {
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Répartition des macros</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           {totalMacros === 0 ? (
-            <p className="text-center text-sm text-muted-foreground py-8">Ajoutez des repas pour voir les statistiques</p>
+            <p className="text-center text-xs text-muted-foreground py-4">Ajoutez des repas pour voir les statistiques</p>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="h-36 w-36">
+              <div className="h-28 w-28">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={macroData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={40}
-                      outerRadius={65}
+                      innerRadius={30}
+                      outerRadius={50}
                       paddingAngle={3}
                       dataKey="value"
                       strokeWidth={0}
@@ -64,12 +64,12 @@ export default function Stats() {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1.5">
                 {macroData.map((d) => (
                   <div key={d.name} className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full" style={{ backgroundColor: d.color }} />
-                    <span className="text-xs">{d.name}</span>
-                    <span className="text-xs font-bold">{d.value}g</span>
+                    <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+                    <span className="text-[11px] font-medium">{d.name}</span>
+                    <span className="text-[11px] font-bold">{d.value}g</span>
                     <span className="text-[10px] text-muted-foreground">
                       ({totalMacros > 0 ? Math.round((d.value / totalMacros) * 100) : 0}%)
                     </span>
@@ -83,11 +83,11 @@ export default function Stats() {
 
       {/* Weekly calories */}
       <Card className="border-0 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">Calories (7 derniers jours)</CardTitle>
+        <CardHeader className="pb-1">
+          <CardTitle className="text-sm">Calories (7 derniers jours)</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-48">
+        <CardContent className="pt-0">
+          <div className="h-32">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weekData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
@@ -101,7 +101,7 @@ export default function Stats() {
                     fontSize: '12px',
                   }}
                 />
-                <Bar dataKey="calories" fill="hsl(142, 71%, 45%)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="calories" fill="hsl(199, 89%, 48%)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -110,11 +110,11 @@ export default function Stats() {
 
       {/* Weekly carbs */}
       <Card className="border-0 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">Glucides (7 derniers jours)</CardTitle>
+        <CardHeader className="pb-1">
+          <CardTitle className="text-sm">Glucides (7 derniers jours)</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-48">
+        <CardContent className="pt-0">
+          <div className="h-32">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weekData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
@@ -147,6 +147,8 @@ export default function Stats() {
               { label: 'Glucides', current: todayNutrition.carbs, goal: profile.carbGoal, unit: 'g' },
               { label: 'Protéines', current: todayNutrition.protein, goal: profile.proteinGoal, unit: 'g' },
               { label: 'Lipides', current: todayNutrition.fat, goal: profile.fatGoal, unit: 'g' },
+              { label: 'Sucre', current: todayNutrition.sugar, goal: profile.sugarGoal, unit: 'g' },
+              { label: 'Sel', current: todayNutrition.salt, goal: profile.saltGoal, unit: 'g' },
             ].map((item) => {
               const pct = Math.min(100, (item.current / item.goal) * 100);
               return (

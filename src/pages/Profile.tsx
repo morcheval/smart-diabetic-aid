@@ -81,18 +81,53 @@ export default function Profile() {
             <Label className="text-xs">Nom</Label>
             <Input value={profile.name} onChange={(e) => updateField('name', e.target.value)} />
           </div>
-          <div>
-            <Label className="text-xs">Type de diabète</Label>
-            <Select value={profile.diabetesType} onValueChange={(v) => updateField('diabetesType', v)}>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Âge</Label>
+              <Input type="number" value={profile.age || ''} onChange={(e) => updateField('age', Number(e.target.value))} />
+            </div>
+            <div>
+              <Label className="text-xs">Sexe</Label>
+              <Select value={profile.gender || ''} onValueChange={(v) => updateField('gender', v)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choisir" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="homme">Homme</SelectItem>
+                  <SelectItem value="femme">Femme</SelectItem>
+                  <SelectItem value="autre">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Poids (kg)</Label>
+              <Input type="number" value={profile.weight || ''} onChange={(e) => updateField('weight', Number(e.target.value))} />
+            </div>
+            <div>
+              <Label className="text-xs">Taille (cm)</Label>
+              <Input type="number" value={profile.height || ''} onChange={(e) => updateField('height', Number(e.target.value))} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs">Type de diabète</Label>
+              <Select value={profile.diabetesType} onValueChange={(v) => updateField('diabetesType', v)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(DIABETES_TYPE_LABELS).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  {Object.entries(DIABETES_TYPE_LABELS).map(([key, label]) => (
+                    <SelectItem key={key} value={key}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-xs">Ratio Glucides/Insuline</Label>
+              <Input type="number" step="0.1" value={profile.carbInsulinRatio || ''} onChange={(e) => updateField('carbInsulinRatio', Number(e.target.value))} placeholder="ex: 1.0" />
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -120,6 +155,14 @@ export default function Profile() {
           <div>
             <Label className="text-xs">Lipides (g)</Label>
             <Input type="number" value={profile.fatGoal} onChange={(e) => updateField('fatGoal', Number(e.target.value))} />
+          </div>
+          <div>
+            <Label className="text-xs">Sucre (g)</Label>
+            <Input type="number" value={profile.sugarGoal} onChange={(e) => updateField('sugarGoal', Number(e.target.value))} />
+          </div>
+          <div>
+            <Label className="text-xs">Sel (g)</Label>
+            <Input type="number" value={profile.saltGoal} onChange={(e) => updateField('saltGoal', Number(e.target.value))} />
           </div>
         </CardContent>
       </Card>

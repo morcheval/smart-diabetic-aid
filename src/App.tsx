@@ -29,6 +29,9 @@ import Stats from "./pages/Stats";
 import Profile from "./pages/Profile";
 import Conseils from "./pages/Conseils";
 import Insulin from "./pages/Insulin";
+import DiabetesInfo from "./pages/DiabetesInfo";
+import InsulinInfo from "./pages/InsulinInfo";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 // Client React Query pour gérer les requêtes asynchrones (fetch, cache, mutations)
@@ -47,7 +50,7 @@ const App = () => (
         {/* Conteneur principal : centré, largeur max mobile, fond thémé */}
         <div className="mx-auto min-h-screen max-w-md bg-background">
           {/* Zone de contenu avec padding et espace pour la barre de nav en bas */}
-          <main className="px-4 pt-4 pb-24">
+          <main className="px-3 pt-3 pb-20">
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/scanner" element={<Scanner />} />
@@ -56,6 +59,9 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/conseils" element={<Conseils />} />
               <Route path="/insulin" element={<Insulin />} />
+              <Route path="/diabetes-info" element={<DiabetesInfo />} />
+              <Route path="/insulin-info" element={<InsulinInfo />} />
+              <Route path="/legal" element={<Legal />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

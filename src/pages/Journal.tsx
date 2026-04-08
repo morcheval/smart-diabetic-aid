@@ -35,12 +35,14 @@ export default function Journal() {
       </div>
 
       {/* Daily summary */}
-      <div className="grid grid-cols-4 gap-2 text-center">
+      <div className="grid grid-cols-3 gap-2 text-center">
         {[
           { label: 'Calories', value: `${Math.round(nutrition.calories)}`, unit: 'kcal' },
           { label: 'Glucides', value: `${Math.round(nutrition.carbs)}`, unit: 'g' },
           { label: 'Protéines', value: `${Math.round(nutrition.protein)}`, unit: 'g' },
           { label: 'Lipides', value: `${Math.round(nutrition.fat)}`, unit: 'g' },
+          { label: 'Sucre', value: `${nutrition.sugar.toFixed(1)}`, unit: 'g' },
+          { label: 'Sel', value: `${nutrition.salt.toFixed(1)}`, unit: 'g' },
         ].map((item) => (
           <div key={item.label} className="rounded-xl bg-muted/50 p-2">
             <p className="text-lg font-bold">{item.value}</p>
